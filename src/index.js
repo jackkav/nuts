@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text, TextInput,
   View, ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 
@@ -43,19 +44,23 @@ class SearchBar extends Component {
 export default class nuts extends Component {
   constructor(props) {
     super(props);
-    this.state = { items: [] };
+    this.state = { items: [], loading: false };
   }
   componentDidMount() {
+    this.state.loading=true
     fetch('https://demonic-persistance.herokuapp.com/api/showTitles')
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({ items: responseJson })
+          this.state.loading=false
       })
       .catch((error) => {
+        this.state.loading=false
         console.error(error);
       });
   }
   showList() {
+    if(!this.state.loading)return <ActivityIndicator animating color="black" size="large" />
     return this.state.items.map(item => {
       return <ListItem
         key={item}
@@ -93,4 +98,3 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
