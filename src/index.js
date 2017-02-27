@@ -29,27 +29,7 @@ class Blink extends Component {
     );
   }
 }
-class PizzaTranslator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: '' };
-  }
 
-  render() {
-    return (
-      <View style={{ padding: 10 }}>
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => this.setState({ text })}
-        />
-        <Text style={{ padding: 10, fontSize: 42 }}>
-          {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
-        </Text>
-      </View>
-    );
-  }
-}
 class ListItem extends Component {
   constructor(props) {
     super(props);
@@ -59,9 +39,9 @@ class ListItem extends Component {
       <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 5 }}>
         <View style={{ width: 70, height: 50, marginRight: 10, backgroundColor: 'steelblue' }} />
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <Text style={{ color: 'grey' }}>{this.props.episodeNumber||'1x1'}</Text>
-          <Text>{this.props.title||'Title'}</Text>
-          <Text style={{ color: 'grey' }}>{this.props.episodeName||'Episode name'}</Text>
+          <Text style={{ color: 'grey' }}>{this.props.episodeNumber || '1x1'}</Text>
+          <Text>{this.props.title || 'Title'}</Text>
+          <Text style={{ color: 'grey' }}>{this.props.episodeName || ''}</Text>
         </View>
       </View>
     );
@@ -83,43 +63,36 @@ class SearchBar extends Component {
     );
   }
 }
-  function getMoviesFromApiAsync() {
-    return fetch('https://facebook.github.io/react-native/movies.json')
+export default class nuts extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { items: [] };
+  }
+  componentDidMount() {
+    fetch('https://facebook.github.io/react-native/movies.json')
       .then((response) => response.json())
       .then((responseJson) => {
-        alert(JSON.stringify(responseJson.movies))
-        return responseJson.movies;
+        this.setState({ items: responseJson.movies })
       })
       .catch((error) => {
         console.error(error);
       });
   }
-export default class nuts extends Component {
-  constructor(props) {
-    super(props);
-    const movies = getMoviesFromApiAsync()
-    this.state={movies}
-    //TODO how to set a title from this object?
+  showList() {
+    return this.state.items.map(item => {
+      return <ListItem
+        key={item.title}
+        title={item.title}
+        episodeNumber={item.releaseYear}
+         />
+    })
   }
   render() {
     return (
       <View style={{ flex: 1 }}>
         <SearchBar />
         <ScrollView>
-          <ListItem title='star wars'/>
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
+          {this.showList()}
         </ScrollView>
       </View>
     );
