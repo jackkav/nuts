@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -11,24 +5,7 @@ import {
   Text, TextInput,
   View, ScrollView,
 } from 'react-native';
-class Blink extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { showText: true };
 
-    // Toggle the state every second
-    setInterval(() => {
-      this.setState({ showText: !this.state.showText });
-    }, 1000);
-  }
-
-  render() {
-    let display = this.state.showText ? this.props.text : ' ';
-    return (
-      <Text>{display}</Text>
-    );
-  }
-}
 
 class ListItem extends Component {
   constructor(props) {
@@ -69,10 +46,10 @@ export default class nuts extends Component {
     this.state = { items: [] };
   }
   componentDidMount() {
-    fetch('https://facebook.github.io/react-native/movies.json')
+    fetch('https://demonic-persistance.herokuapp.com/api/shows')
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({ items: responseJson.movies })
+        this.setState({ items: responseJson })
       })
       .catch((error) => {
         console.error(error);
@@ -81,9 +58,9 @@ export default class nuts extends Component {
   showList() {
     return this.state.items.map(item => {
       return <ListItem
-        key={item.title}
+        key={item.magnet}
         title={item.title}
-        episodeNumber={item.releaseYear}
+        episodeNumber={item.episode}
          />
     })
   }
