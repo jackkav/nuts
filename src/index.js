@@ -16,7 +16,7 @@ class ListItem extends Component {
       <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 5 }}>
         <View style={{ width: 70, height: 50, marginRight: 10, backgroundColor: 'steelblue' }} />
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <Text style={{ color: 'grey' }}>{this.props.episodeNumber || '1x1'}</Text>
+          <Text style={{ color: 'grey' }}>{this.props.episodeNumber || ''}</Text>
           <Text>{this.props.title || 'Title'}</Text>
           <Text style={{ color: 'grey' }}>{this.props.episodeName || ''}</Text>
         </View>
@@ -46,7 +46,7 @@ export default class nuts extends Component {
     this.state = { items: [] };
   }
   componentDidMount() {
-    fetch('https://demonic-persistance.herokuapp.com/api/shows')
+    fetch('https://demonic-persistance.herokuapp.com/api/showTitles')
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({ items: responseJson })
@@ -58,9 +58,8 @@ export default class nuts extends Component {
   showList() {
     return this.state.items.map(item => {
       return <ListItem
-        key={item.magnet}
-        title={item.title}
-        episodeNumber={item.episode}
+        key={item}
+        title={item}
          />
     })
   }
