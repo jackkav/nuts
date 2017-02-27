@@ -56,9 +56,13 @@ class ListItem extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 1, flexDirection: 'row' }}>
-        <View style={{ width: 50, height: 50, backgroundColor: 'steelblue' }} />
-        <Text>My name is</Text>
+      <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 5 }}>
+        <View style={{ width: 70, height: 50, marginRight: 10, backgroundColor: 'steelblue' }} />
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <Text style={{ color: 'grey' }}>{this.props.episodeNumber||'1x1'}</Text>
+          <Text>{this.props.title||'Title'}</Text>
+          <Text style={{ color: 'grey' }}>{this.props.episodeName||'Episode name'}</Text>
+        </View>
       </View>
     );
   }
@@ -69,18 +73,46 @@ class SearchBar extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 0.1, backgroundColor: 'powderblue' }}>
-          <Blink style={styles.welcome} text='Search Bar' />
-        </View>
+      <View style={{ flex: 0.05, padding: 10 }}>
+        <TextInput
+          style={{ height: 40 }}
+          placeholder="Type here to search!"
+          onChangeText={(text) => this.setState({ text })}
+        />
+      </View>
     );
   }
 }
+  function getMoviesFromApiAsync() {
+    return fetch('https://facebook.github.io/react-native/movies.json')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        alert(JSON.stringify(responseJson.movies))
+        return responseJson.movies;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 export default class nuts extends Component {
+  constructor(props) {
+    super(props);
+    const movies = getMoviesFromApiAsync()
+    this.state={movies}
+    //TODO how to set a title from this object?
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
         <SearchBar />
-        <ScrollView style={{ flex: 1, backgroundColor: 'skyblue' }}>
+        <ScrollView>
+          <ListItem title='star wars'/>
+          <ListItem />
+          <ListItem />
+          <ListItem />
+          <ListItem />
+          <ListItem />
+          <ListItem />
           <ListItem />
           <ListItem />
           <ListItem />
@@ -89,20 +121,6 @@ export default class nuts extends Component {
           <ListItem />
           <ListItem />
         </ScrollView>
-        {/*<View style={{flex: 1, backgroundColor: 'powderblue'}}>
-          <Blink style={styles.welcome} text='Welcome to React Native!' />
-        </View>
-        <ScrollView>
-        <View style={{flex: 2, backgroundColor: 'skyblue'}} >
-          <Blink style={styles.welcome} text='To get started, type below' />
-        </View>
-        <View style={{flex: 3, backgroundColor: 'steelblue'}} >
-          <PizzaTranslator style={styles.welcome} />
-          <Text style={{fontSize:96}}>Scroll me plz</Text>
-          <Text style={{fontSize:96}}>Scroll me plz</Text>
-          <Text style={{fontSize:96}}>Scroll me plz</Text>
-        </View>
-        </ScrollView>*/}
       </View>
     );
   }
