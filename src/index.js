@@ -29,13 +29,18 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
   }
+  postSearch(text){
+    if(text.length>3){
+      this.setState({ text:text })
+    }
+  }
   render() {
     return (
       <View style={{ flex: 0.05, padding: 10 }}>
         <TextInput
           style={{ height: 40 }}
           placeholder="Type here to search!"
-          onChangeText={(text) => this.setState({ text })}
+          onChangeText={(text) => this.postSearch(text)}
         />
       </View>
     );
