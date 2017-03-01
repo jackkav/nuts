@@ -8,7 +8,6 @@
 
 ## search
 
-- search should post after 3 characters
 - search should display all results in grid
 - search show favorite star in list
 
