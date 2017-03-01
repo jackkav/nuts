@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  AppRegistry,
-  StyleSheet,
-  Text, TextInput,
   View, ScrollView,
   ActivityIndicator,
-} from 'react-native';
+} from 'react-native'
 
 import { SearchBar, ListItem } from './components'
 
 
 export default class nuts extends Component {
   constructor(props) {
-    super(props);
-    this.state = { items: [], loading: false };
+    super(props)
+    this.state = { items: [], loading: false }
   }
   componentDidMount() {
     this.state.loading = true
@@ -25,17 +22,15 @@ export default class nuts extends Component {
       })
       .catch((error) => {
         this.state.loading = false
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
   showList() {
     if (!this.state.loading) return <ActivityIndicator animating color="black" size="large" />
-    return this.state.items.map(item => {
-      return <ListItem
-        key={item}
-        title={item}
-      />
-    })
+    return this.state.items.map(item => <ListItem
+      key={item}
+      title={item}
+    />)
   }
   render() {
     return (
@@ -45,6 +40,6 @@ export default class nuts extends Component {
           {this.showList()}
         </ScrollView>
       </View>
-    );
+    )
   }
 }
