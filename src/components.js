@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import {
     Text, TextInput,
-    View,
+    View, ScrollView, ActivityIndicator,
 } from 'react-native'
 import debounce from 'lodash/debounce'
 
@@ -30,25 +30,36 @@ export class ListItem extends Component {
   }
 }
 
-const fetchQuery = debounce((q) => {
-  fetch('https://facebook.github.io/react-native/movies.json')
+
+const syncFetch = (q) => fetch('https://facebook.github.io/react-native/movies.json')
       .then((response) => response.json())
-      .then((responseJson) =>
-         responseJson.movies.filter(item =>
-         JSON.stringify(item).toLowerCase().indexOf(q.toLowerCase()) > -1))
+      .then((responseJson) => responseJson.movies.filter(item =>
+         JSON.stringify(item).toLowerCase().includes(q.toLowerCase())))
       .catch((error) => {
         console.error(error)
       })
-}, 500)
+
 
 export class SearchBar extends Component {
-  postSearch(text) {
+  constructor(props) {
+    super(props)
+    this.state = { items: [], loading: false }
+  }
+  async postSearch(text) {
     if (text.length > 3) {
-      fetchQuery(text)
-      this.setState({ text })
-            // submit search to API
-
+      this.loading = true
+      const items = await syncFetch(text)
+      this.loading = false
+      this.setState({ items })
     }
+  }
+  showList() {
+    if (this.state.loading) return <ActivityIndicator animating color="black" size="large" />
+    return this.state.items.map(item => <ListItem
+      key={item.title}
+      title={item.title}
+      episodeNumber={item.releaseYear}
+    />)
   }
   render() {
     return (
@@ -58,6 +69,9 @@ export class SearchBar extends Component {
           placeholder="Type here to search!"
           onChangeText={(text) => this.postSearch(text)}
         />
+        <ScrollView>
+          {this.showList()}
+        </ScrollView>
       </View>
     )
   }

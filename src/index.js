@@ -36,9 +36,9 @@ export default class nuts extends Component {
     return (
       <View style={{ flex: 1 }}>
         <SearchBar />
-        <ScrollView>
+        {/* <ScrollView>
           {this.showList()}
-        </ScrollView>
+        </ScrollView>*/}
       </View>
     )
   }
