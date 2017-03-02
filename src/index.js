@@ -3,11 +3,13 @@ import {
   View, ScrollView,
   ActivityIndicator,
 } from 'react-native'
-
+import { connect } from 'react-redux'
 import { SearchBar, ListItem } from './components'
 
 
-export default class nuts extends Component {
+export default connect(mapStateToProps)(nuts)
+
+export class nuts extends Component {
   constructor(props) {
     super(props)
     this.state = { items: [], loading: false }
