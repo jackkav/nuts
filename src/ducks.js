@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch'
 // action types
 export const types = {
   ADD_FAVORITE: 'ADD_FAVORITE',
+  REMOVE_FAVORITE: 'REMOVE_FAVORITE',
   ADD_TODO: 'ADD_TODO',
   FETCH_SHOWS_REQUEST: 'FETCH_SHOWS_REQUEST',
   FETCH_SHOWS_SUCCESS: 'FETCH_SHOWS_SUCCESS',
@@ -47,31 +48,13 @@ export class actions {
 // reducers
 const initialState = [
   {
-    text: 'Use Redux',
+    text: 'The Walking Dead',
     completed: false,
     id: 0,
   },
 ]
 
-export class reducers {
-  static shows(state = initialState, action) {
-    switch (action.type) {
-      case types.ADD_FAVORITE:
-        return [
-          {
-            id: state.reduce((maxId, show) => Math.max(show.id, maxId), -1) + 1,
-            completed: false,
-            text: action.text,
-          },
-          ...state,
-        ]
-
-      default:
-        return state
-    }
-  }
-}
-export function addFavorite(state = initialState, action) {
+export function favoriteReducer(state = initialState, action) {
   switch (action.type) {
     case types.ADD_FAVORITE:
       return [

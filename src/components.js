@@ -3,7 +3,6 @@ import {
     Text, TextInput,
     View, ScrollView, ActivityIndicator,
 } from 'react-native'
-import debounce from 'lodash/debounce'
 
 export class ListItem extends Component {
   static propTypes = {
